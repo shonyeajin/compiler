@@ -4,26 +4,34 @@
 #include <unistd.h>
 
 
-int expression();
+double expression();
 void get_token();
-int term();
-int factor();
+double term();
+double factor();
 void error();
 
 
-int num;
-enum Token {_NULL,PLUS,STAR,NUMBER,LP,RP,END};
+char num;
+enum Token {_NULL,PLUS,MINUS,DIV,DOT,STAR,NUMBER,LP,RP,END};
 enum Token token;
-
+char numbuf[100];
+int numIdx=0;
+int isInt=1;
 
 void  main(){
-		int result;
+		double result;
+		memset(numbuf,0,sizeof(numbuf));
 		get_token();
 		result=expression();
 		if(token!=END)
 				error(3);
-		else
-				printf("%d\n",result);
+		else{
+				if(isInt)
+						printf("%d\n",(int)result);
+				else
+						printf("%f\n",result);
+
+		}
 
 }
 
@@ -31,8 +39,8 @@ void  main(){
 
 
 
-int expression(){
-		int result;
+double expression(){
+		double result;
 		result=term();
 		while(token==PLUS){
 				get_token();
@@ -51,18 +59,24 @@ void get_token(){
 //number value-->num
 //token=next token of input
 //한 글자 가져와서 그게 enum의 어디에 속하는지 검사하고 그거를 token에 값 대입
-int c;
+char c;
 c=getchar();
 switch(c){
 		case 48 ... 57:
-			   num=c-'0';
+			   num=c;
 			   token=NUMBER;
 			   break;
 		case '+':
 			   token=PLUS;
 			   break;
+		case '-':
+			   token=MINUS;
+			   break;
 		case '*':
 			   token=STAR;
+			   break;
+		case '/':
+			   token=DIV;
 			   break;
 		case '(':
 			   token=LP;
@@ -72,6 +86,9 @@ switch(c){
 			   break;
 		case EOF:
 			   token=END;
+			   break;
+		case '.':
+			   token=DOT;
 			   break;
 		case '\n':
 			   token=END;
@@ -89,8 +106,8 @@ switch(c){
 
 }
 
-int term(){
-		int result;
+double term(){
+		double result;
 		result=factor();
 		while(token==STAR){
 				get_token();
@@ -99,12 +116,38 @@ int term(){
 		return(result);
 }
 
-int factor(){
-		int result;
+double factor(){
+		double result;
 
+		//result=num;
+		//get_token();
+		//한자리 이상 숫자 처리
 		if(token==NUMBER){
-				result=num;
+				numbuf[numIdx]=num;
 				get_token();
+				
+				while(token==NUMBER){
+						numbuf[++numIdx]=num;
+						get_token();
+				}
+				if(token==DOT){
+						isInt=0;
+						numbuf[++numIdx]='.';
+						get_token();
+
+						while(token==NUMBER){
+								numbuf[++numIdx]=num;
+								get_token();
+						}
+
+				}
+				result=atof(numbuf);
+				memset(numbuf,0,sizeof(numbuf));
+				numIdx=0;
+
+				
+
+
 
 		}else if(token==LP){
 				get_token();

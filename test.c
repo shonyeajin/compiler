@@ -5,9 +5,23 @@
 
 int main(int argc,char * argv[]){
 
+		char numbuf[100];
+		memset(numbuf,0,sizeof(numbuf));
+		printf("%s\n",numbuf);
+		
+
+		numbuf[0]='1';
+		numbuf[1]='2';
+		numbuf[2]='.';
+		numbuf[3]='2';
+		printf("%ld\n",strlen(numbuf));
+		
+		printf("%*.*f\n",(int)(strlen(numbuf)-1),0,atof(numbuf));
 
 
-		int c;
+
+
+/*		char c;
 		while(1){
 
 				c=getchar();
@@ -44,6 +58,8 @@ int main(int argc,char * argv[]){
 
 
 		}
+*/
+
 
 		return 0;
 
