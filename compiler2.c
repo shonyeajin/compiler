@@ -49,6 +49,7 @@ int yylval;
 
 void main(){
 		yyparse();
+		
 
 }
 
@@ -108,6 +109,7 @@ void reduce(int i){
 						break;
 
 		}
+		printf("top value:%d\n",value[top]);
 }
 
 void yyerror(){
@@ -119,7 +121,7 @@ int yylex(){
 
 		static char ch=' ';
 		int i=0;
-		while(ch==' '||ch=='\t'||ch=='\n')
+		while(ch==' '||ch=='\t')
 				ch=getchar();
 		if(isdigit(ch)){
 				do{
@@ -134,7 +136,7 @@ int yylex(){
 		else if(ch=='*'){ch=getchar(); return(STAR);}
 		else if(ch=='('){ch=getchar(); return(LPAREN);}
 		else if(ch==')'){ch=getchar(); return(RPAREN);}
-		else if(ch==EOF){return(END);}
+		else if(ch=='\n'){return(END);}
 		else lex_error();
 
 }
