@@ -12,7 +12,7 @@ void error();
 
 
 char num;
-enum Token {_NULL,PLUS,MINUS,DIV,DOT,STAR,NUMBER,LP,RP,END};
+enum Token {_NULL,PLUS,DOT,STAR,NUMBER,LP,RP,END,MINUS,DIVID};
 enum Token token;
 char numbuf[100];
 int numIdx=0;
@@ -46,6 +46,11 @@ double expression(){
 				get_token();
 				result=result+term();
 		}
+		while(token==MINUS){
+				get_token();
+				result=result-term();
+		}
+
 		return(result);
 
 
@@ -69,14 +74,8 @@ switch(c){
 		case '+':
 			   token=PLUS;
 			   break;
-		case '-':
-			   token=MINUS;
-			   break;
 		case '*':
 			   token=STAR;
-			   break;
-		case '/':
-			   token=DIV;
 			   break;
 		case '(':
 			   token=LP;
@@ -92,6 +91,12 @@ switch(c){
 			   break;
 		case '\n':
 			   token=END;
+			   break;
+		case '/':
+			   token=DIVID;
+			   break;
+		case '-':
+			   token=MINUS;
 			   break;
 		default:
 			   token=_NULL;
@@ -113,6 +118,11 @@ double term(){
 				get_token();
 				result=result*factor();
 		}
+		while(token==DIVID){
+				get_token();
+				result=result/factor();
+		}
+
 		return(result);
 }
 
