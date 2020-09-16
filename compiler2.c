@@ -15,6 +15,13 @@
 #define TERM 1
 #define ACC 999
 
+typedef struct
+{
+		int yylval;
+		double yylval_f;
+
+} TT;
+
 
 int yyparse();
 void shift(int);
@@ -40,11 +47,13 @@ int prod_left[7]={0,EXPRESSION,EXPRESSION,TERM,TERM,FACTOR,FACTOR};
 int prod_length[7]={0,3,1,3,1,3,1};
 
 int stack[1000];
-int value[1000];
+double value[1000];
 int top=-1;
 int sym;
 char yytext[32];
-int yylval;
+double  yylval;
+int err_location=0;
+int is_float=0;
 
 
 void main(){
@@ -66,6 +75,11 @@ int yyparse(){
 				else yyerror();
 		}
 		while (i!=ACC);
+		if(is_float==1)
+				printf("calculating result:%f\n",value[top]);
+		else
+				printf("calculating result:%d\n",(int)value[top]);
+
 }
 
 
@@ -109,7 +123,7 @@ void reduce(int i){
 						break;
 
 		}
-		printf("top value:%d\n",value[top]);
+		//printf("top value:%f\n",value[top]);
 }
 
 void yyerror(){
@@ -121,21 +135,37 @@ int yylex(){
 
 		static char ch=' ';
 		int i=0;
-		while(ch==' '||ch=='\t')
+		while(ch==' '||ch=='\t'){
 				ch=getchar();
+				err_location++;
+		}
 		if(isdigit(ch)){
+				//TT tt;
 				do{
 						yytext[i++]=ch;
 						ch=getchar();
+						err_location++;
 				}while(isdigit(ch));
+				if(ch=='.'){
+						is_float=1;
+						yytext[i++]=ch;
+						ch=getchar();
+						err_location++;
+						printf("[WARNING]: calculating with flaot near by %dth character\n",err_location-1);
+				}
+				while(isdigit(ch)){
+						yytext[i++]=ch;
+						ch=getchar();
+						err_location++;
+				}
 				yytext[i]=0;
-				yylval=atoi(yytext);
+				yylval=atof(yytext);
 				return(NUMBER);
 		}
-		else if(ch=='+'){ch=getchar(); return(PLUS);}
-		else if(ch=='*'){ch=getchar(); return(STAR);}
-		else if(ch=='('){ch=getchar(); return(LPAREN);}
-		else if(ch==')'){ch=getchar(); return(RPAREN);}
+		else if(ch=='+'){ch=getchar(); err_location++; return(PLUS);}
+		else if(ch=='*'){ch=getchar(); err_location++;return(STAR);}
+		else if(ch=='('){ch=getchar(); err_location++;return(LPAREN);}
+		else if(ch==')'){ch=getchar(); err_location++;return(RPAREN);}
 		else if(ch=='\n'){return(END);}
 		else lex_error();
 
