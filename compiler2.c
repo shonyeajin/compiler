@@ -123,7 +123,6 @@ void reduce(int i){
 						break;
 
 		}
-		//printf("top value:%f\n",value[top]);
 }
 
 void yyerror(){
@@ -151,7 +150,7 @@ int yylex(){
 						yytext[i++]=ch;
 						ch=getchar();
 						err_location++;
-						printf("[WARNING]: calculating with flaot near by %dth character\n",err_location-1);
+						printf("[WARNING]: calculating integer with flaot near by %dth character\n",err_location-1);
 				}
 				while(isdigit(ch)){
 						yytext[i++]=ch;
@@ -176,28 +175,5 @@ void lex_error(){
 		printf("illegal token\n");
 		exit(1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
