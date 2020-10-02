@@ -860,57 +860,57 @@ YY_RULE_SETUP
 case 10:
 YY_RULE_SETUP
 #line 24 "kim.l"
-{return(ENUM);}
+{return(ENUM_SYM);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 25 "kim.l"
-{return(FOR);}
+{return(FOR_SYM);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 26 "kim.l"
-{return(IF);}
+{return(IF_SYM);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 27 "kim.l"
-{return(RETURN);}
+{return(RETURN_SYM);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 28 "kim.l"
-{return(SIZEOF);}
+{return(SIZEOF_SYM);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 29 "kim.l"
-{return(STATIC);}
+{return(STATIC_SYM);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 30 "kim.l"
-{return(STRUCT);}
+{return(STRUCT_SYM);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 31 "kim.l"
-{return(SWITCH);}
+{return(SWITCH_SYM);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 32 "kim.l"
-{return(TYPEDEF);}
+{return(TYPEDEF_SYM);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 33 "kim.l"
-{return(UNION);}
+{return(UNION_SYM);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 34 "kim.l"
-{return(WHILE);}
+{return(WHILE_SYM);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
@@ -2102,7 +2102,7 @@ void yyfree (void * ptr )
 
 
 int checkidentifier(char *s){
-		char *table[]={"int","float","char","void"...};
+		char *table[]={"int","float","char","void"};
 		for(int i=0;i<4;i++){
 				if(!strcmp(table[i],s)){//같으면
 						return(TYPE_IDENTIFIER);

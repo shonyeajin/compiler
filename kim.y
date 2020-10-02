@@ -1,5 +1,6 @@
 %{
-		extern int line_no;
+#include <stdio.h>
+extern int line_no;
 %}
 %start program
 %token DOTDOTDOT OROR ANDAND EQUALEQUAL NOTEQUAL RIGHTSIGN LEFTSIGN RIGHTEQUALSIGN LEFTEQUALSIGN DIVID MOD AND EXCLAM MINUS PLUS SIZEOF_SYM LP LLP LLLP RP RRP RRRP DOT ARROW PLUSPLUS MINUSMINUS INTEGER_CONSTANT FLOAT_CONSTANT CHARACTER_CONSTANT STRING_LITERAL RETURN_SYM CONTINUE_SYM BREAK_SYM WHILE_SYM DO_SYM FOR_SYM IF_SYM ELSE_SYM SWITCH_SYM DEFAULT_SYM CASE_SYM COLON IDENTIFIER TYPE_IDENTIFIER SEMI_COLON COMMA EQUAL AUTO_SYM STATIC_SYM TYPEDEF_SYM STRUCT_SYM UNION_SYM ENUM_SYM STAR
@@ -154,12 +155,14 @@ compound_statement:
 						;
 declaration_list: 
 						declaration_list declaration 
+						| 
 						;
 statement_list:
 						statement_list statement 
+						| 
 						;
 expression_statement:
-						SEMI_COLON 
+						 SEMI_COLON 
 						| expression SEMI_COLON 
 						;
 selection_statement: 
@@ -171,6 +174,7 @@ iteration_statement:
 						WHILE_SYM LP expression RP statement
 						| DO_SYM statement WHILE_SYM LP expression RP SEMI_COLON
 						| FOR_SYM LP expression_opt SEMI_COLON expression_opt SEMI_COLON expression_opt RP statement 
+						| 
 						;
 expression_opt:
 						expression 
@@ -199,6 +203,7 @@ postfix_expression:
 						;
 arg_expression_list_opt:
 						arg_expression_list 
+						| 
 						;
 arg_expression_list: 
 						assignment_expression 
