@@ -64,10 +64,17 @@
 /* Copy the first part of user declarations.  */
 #line 1 "kim.y" /* yacc.c:339  */
 
+#include <stdlib.h>
 #include <stdio.h>
-extern int line_no;
+#include "type.h"
 
-#line 71 "kim.tab.c" /* yacc.c:339  */
+extern int line_no,syntax_err;
+extern A_NODE *root;
+extern A_ID *current_id;
+extern int current_level;
+extern A_TYPE *int_type;
+
+#line 78 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -86,9 +93,9 @@ extern int line_no;
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "kim.tab.h".  */
-#ifndef YY_YY_KIM_TAB_H_INCLUDED
-# define YY_YY_KIM_TAB_H_INCLUDED
+   by #include "y.tab.h".  */
+#ifndef YY_YY_Y_TAB_H_INCLUDED
+# define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -158,6 +165,61 @@ extern int yydebug;
     STAR = 311
   };
 #endif
+/* Tokens.  */
+#define DOTDOTDOT 258
+#define OROR 259
+#define ANDAND 260
+#define EQUALEQUAL 261
+#define NOTEQUAL 262
+#define RIGHTSIGN 263
+#define LEFTSIGN 264
+#define RIGHTEQUALSIGN 265
+#define LEFTEQUALSIGN 266
+#define DIVID 267
+#define MOD 268
+#define AND 269
+#define EXCLAM 270
+#define MINUS 271
+#define PLUS 272
+#define SIZEOF_SYM 273
+#define LP 274
+#define LLP 275
+#define LLLP 276
+#define RP 277
+#define RRP 278
+#define RRRP 279
+#define DOT 280
+#define ARROW 281
+#define PLUSPLUS 282
+#define MINUSMINUS 283
+#define INTEGER_CONSTANT 284
+#define FLOAT_CONSTANT 285
+#define CHARACTER_CONSTANT 286
+#define STRING_LITERAL 287
+#define RETURN_SYM 288
+#define CONTINUE_SYM 289
+#define BREAK_SYM 290
+#define WHILE_SYM 291
+#define DO_SYM 292
+#define FOR_SYM 293
+#define IF_SYM 294
+#define ELSE_SYM 295
+#define SWITCH_SYM 296
+#define DEFAULT_SYM 297
+#define CASE_SYM 298
+#define COLON 299
+#define IDENTIFIER 300
+#define TYPE_IDENTIFIER 301
+#define SEMI_COLON 302
+#define COMMA 303
+#define EQUAL 304
+#define AUTO_SYM 305
+#define STATIC_SYM 306
+#define TYPEDEF_SYM 307
+#define STRUCT_SYM 308
+#define UNION_SYM 309
+#define ENUM_SYM 310
+#define STAR 311
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -171,11 +233,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_KIM_TAB_H_INCLUDED  */
+#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 179 "kim.tab.c" /* yacc.c:358  */
+#line 241 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -478,22 +540,22 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,     9,     9,    12,    13,    16,    17,    20,    21,    24,
-      25,    28,    29,    32,    33,    36,    37,    38,    39,    42,
-      43,    44,    47,    48,    51,    52,    55,    56,    57,    60,
-      61,    62,    65,    66,    69,    70,    73,    76,    77,    80,
-      83,    84,    85,    88,    89,    92,    93,    96,    97,   100,
-     101,   104,   105,   106,   107,   110,   111,   114,   115,   118,
-     119,   122,   123,   126,   127,   128,   131,   132,   133,   136,
-     137,   138,   139,   140,   143,   144,   147,   148,   151,   152,
-     153,   154,   155,   156,   159,   160,   161,   164,   167,   168,
-     171,   172,   175,   176,   179,   180,   181,   184,   185,   186,
-     187,   190,   193,   194,   195,   198,   199,   200,   201,   202,
-     203,   206,   207,   208,   209,   210,   211,   212,   215,   216,
-     219,   220,   223,   224,   225,   226,   227,   228,   229,   230,
-     231,   232,   235,   236,   239,   240,   243,   244,   245,   246,
-     249,   250,   251,   254,   255,   256,   257,   258,   261,   262,
-     263,   266,   267,   270,   271,   274,   275,   278,   281
+       0,    16,    16,    19,    20,    23,    24,    27,    28,    31,
+      32,    35,    36,    39,    40,    43,    44,    45,    46,    49,
+      50,    51,    54,    55,    58,    59,    62,    63,    64,    67,
+      68,    69,    72,    73,    76,    77,    80,    83,    84,    87,
+      90,    91,    92,    95,    96,    99,   100,   103,   104,   107,
+     108,   111,   112,   113,   114,   117,   118,   121,   122,   125,
+     126,   129,   130,   133,   134,   135,   138,   139,   140,   143,
+     144,   145,   146,   147,   150,   151,   154,   155,   158,   159,
+     160,   161,   162,   163,   166,   167,   168,   171,   174,   175,
+     178,   179,   182,   183,   186,   187,   188,   191,   192,   193,
+     194,   197,   200,   201,   202,   205,   206,   207,   208,   209,
+     210,   213,   214,   215,   216,   217,   218,   219,   222,   223,
+     226,   227,   230,   231,   232,   233,   234,   235,   236,   237,
+     238,   239,   242,   243,   246,   247,   250,   251,   252,   253,
+     256,   257,   258,   261,   262,   263,   264,   265,   268,   269,
+     270,   273,   274,   277,   278,   281,   282,   285,   288
 };
 #endif
 
@@ -1510,7 +1572,7 @@ yyreduce:
   switch (yyn)
     {
       
-#line 1514 "kim.tab.c" /* yacc.c:1646  */
+#line 1576 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1738,14 +1800,31 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 283 "kim.y" /* yacc.c:1906  */
+#line 290 "kim.y" /* yacc.c:1906  */
 
 
 extern char *yytext;
 yyerror(char *s){
+		syntax_err++;
 		printf("line %d: %s near %s\n",line_no,s,yytext);
 }
-main(){
+void main(int argc,char *argv[]){
+		//yyparse();
+		if((int yyin=fopen(argv[argc-1],"r"))==NULL){
+				printf("can not open input file: %s\n",argv[argc-1]);
+				exit(1);
+		}
+		initialize();
 		yyparse();
+
 }
+
+
+
+
+
+
+
+
+
 

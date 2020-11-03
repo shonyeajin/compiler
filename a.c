@@ -1,3 +1,4 @@
-int a=1;
-int b=2;
-int c;
+int kim=10+20;
+float *park[3];
+int fun(int x, int y);
+

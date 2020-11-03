@@ -22,7 +22,15 @@ function_definition:
 						;
 declaration: 
 						declaration_specifiers SEMI_COLON 
-						| declaration_specifiers init_declarator_list SEMI_COLON 
+						| declaration_specifiers_opt init_declarator_list_opt SEMI_COLON	
+						;
+declaration_specifiers_opt:
+						declaration_specifiers
+						|
+						;
+init_declarator_list_opt:
+						init_declarator_list
+						|
 						;
 declaration_specifiers: 
 						type_specifier 
@@ -100,9 +108,11 @@ direct_declarator:
 						;
 constant_expression_opt: 
 						constant_expression 
+						|
 						;
 parameter_type_list_opt: 
 						parameter_type_list 
+						|
 						;
 parameter_type_list: 
 						parameter_list 
@@ -141,7 +151,7 @@ statement:
 						labeled_statement 
 						| compound_statement 
 						| expression_statement 
-						|selection_statement
+						| selection_statement
 						| iteration_statement 
 						| jump_statement 
 						;
@@ -174,7 +184,7 @@ iteration_statement:
 						WHILE_SYM LP expression RP statement
 						| DO_SYM statement WHILE_SYM LP expression RP SEMI_COLON
 						| FOR_SYM LP expression_opt SEMI_COLON expression_opt SEMI_COLON expression_opt RP statement 
-						| 
+						|
 						;
 expression_opt:
 						expression 
