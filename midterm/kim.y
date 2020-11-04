@@ -11,7 +11,7 @@ extern A_TYPE *int_type;
 %}
 %start program
 
-%token IDENTIFIER TYPE_IDENTIFIER FLOAT_CONSTANT INTEGER_CONSTANT CHARACTER_CONSTANT STRING_LITERAL PLUS MINUS PLUSPLUS MINUSMINUS BAR AMP BARBAR AMPAMP ARROW SEMICOLON LSS GRR LEQ GEQ EQL NEQ DOTDOTDOT LP RP LB RB LR RR PERIOD COMMA EXCL STAR SLASH PERCENT ASSIGN COLON AUTO_SYM STATIC_SYM TYPEDEF_SYM STRUCT_SYM ENUM_SYM SIZEOF_SYM UNION_SYM IF_SYM ELSE_SYM WHILE_SYM DO_SYM FOR_SYM CONTINUE_SYM BREAK_SYM RETURN_SYM SWITCH_SYM CASE_SYM DEFAULT_SYM
+%token IDENTIFIER TYPE_IDENTIFIER FLOAT_CONSTANT INTEGER_CONSTANT CHARACTER_CONSTANT STRING_LITERAL PLUS MINUS PLUSPLUS MINUSMINUS BAR AMP BARBAR AMPAMP ARROW SEMICOLON LSS GTR LEQ GEQ EQL NEQ DOTDOTDOT LP RP LB RB LR RR PERIOD COMMA EXCL STAR SLASH PERCENT ASSIGN COLON AUTO_SYM STATIC_SYM TYPEDEF_SYM STRUCT_SYM ENUM_SYM SIZEOF_SYM UNION_SYM IF_SYM ELSE_SYM WHILE_SYM DO_SYM FOR_SYM CONTINUE_SYM BREAK_SYM RETURN_SYM SWITCH_SYM CASE_SYM DEFAULT_SYM
 
 
 %%
@@ -39,7 +39,7 @@ declaration_list_opt
 						;
 declaration_list
 						: declaration			{$$=$1;}
-						| declration_list declaration		{$$=linkDeclaratorList($1,$2);}
+						| declaration_list declaration		{$$=linkDeclaratorList($1,$2);}
 						;
 declaration
 						: declaration_specifiers init_declarator_list_opt SEMICOLON	
@@ -77,7 +77,7 @@ initializer_list
 						| initializer_list COMMA initializer	{$$=makeNodeList(N_INIT_LIST,$1,$3);}
 						;
 type_specifier
-						: struct_specifier 				{$$=$1;}
+						: struct_type_specifier 				{$$=$1;}
 						| enum_type_specifier			{$$=$1;}
 						| TYPE_IDENTIFIER				{$$=$1;}
 						;
@@ -163,7 +163,7 @@ parameter_declaration
 						| declaration_specifiers abstract_declarator_opt
 						{$$=setParameterDeclaratorSpecifier(setDeclaratorType(makeDummyIdentifier(),$2),$1);}
 						;
-abstract_decalrator_opt
+abstract_declarator_opt
 						:						{$$=NIL;}
 						| abstract_declarator	{$$=$1;}
 						;
@@ -181,139 +181,165 @@ direct_abstract_declarator
 						| direct_abstract_declarator LP parameter_type_list_opt RP 
 						{$$=setTypeElementType($1,setTypeExpr(makeType(T_FUNC),$3));}
 						;
-//여기서부터 p.269 스테이트먼트 리스트 오피티
-statement:
-						labeled_statement 
-						| compound_statement 
-						| expression_statement 
-						| selection_statement
-						| iteration_statement 
-						| jump_statement 
+statement_list_opt
+						:				{$$=makeNode(N_STMT_LIST_NIL,NIL,NIL,NIL);}
+						| statement_list	{$$=$1;}
 						;
-labeled_statement: 
-						CASE_SYM constant_expression COLON statement
-						| DEFAULT_SYM COLON statement
-						| IDENTIFIER COLON statement 
+statement_list
+						: statement	{$$=makeNode(N_STMT_LIST,$1,NIL,makeNode(N_STMT_LIST_NIL,NIL,NIL,NIL));}
+						| statement_list statement	{$$=makeNodeList(N_STMT_LIST,$1,$2);}
 						;
-compound_statement: 
-						LLP declaration_list statement_list RRP 
+statement
+						: labeled_statement 	{$$=$1;}
+						| compound_statement 	{$$=$1;}
+						| expression_statement 	{$$=$1;}
+						| selection_statement	{$$=$1;}
+						| iteration_statement 	{$$=$1;}
+						| jump_statement 	{$$=$1;}
 						;
-declaration_list: 
-						declaration_list declaration 
-						| 
+labeled_statement
+						: CASE_SYM constant_expression COLON statement	{$$=makeNode(N_STMT_LABEL_CASE,$2,NIL,$4);}
+						| DEFAULT_SYM COLON statement	{$$=makeNode(N_STMT_LABEL_DEFAULT,NIL,$3,NIL);}
 						;
-statement_list:
-						statement_list statement 
-						| 
+compound_statement
+						: LR {$$=current_id; current_level++;} declaration_list_opt 
+						statement_list_opt RR {checkForwardReference(); $$=makeNode(N_STMT_COMPOUND,$3,NIL,$4);
+						current_id=$2; current_level--;}
 						;
-expression_statement:
-						 SEMI_COLON 
-						| expression SEMI_COLON 
+expression_statement
+						: SEMICOLON 		{$$=makeNode(N_STMT_EMPTY,NIL,NIL,NIL);}
+						| expression SEMICOLON 	{$$=makeNode(N_STMT_EXPRESSION,NIL,$1,NIL);}
 						;
-selection_statement: 
-						IF_SYM LP expression RP statement
-						| IF_SYM LP expression RP statement ELSE_SYM statement
-						| SWITCH_SYM LP expression RP statement 
+selection_statement
+						: IF_SYM LP expression RP statement		{$$=makeNode(N_STMT_IF,$3,NIL,$5);}
+						| IF_SYM LP expression RP statement ELSE_SYM statement	{$$=makeNode(N_STMT_IF_ELSE,$3,$5,$7);}
+						| SWITCH_SYM LP expression RP statement 	{$$=makeNode(N_STMT_SWITCH,$3,NIL,$5);}
 						;
-iteration_statement: 
-						WHILE_SYM LP expression RP statement
-						| DO_SYM statement WHILE_SYM LP expression RP SEMI_COLON
-						| FOR_SYM LP expression_opt SEMI_COLON expression_opt SEMI_COLON expression_opt RP statement 
-						|
+iteration_statement
+						: WHILE_SYM LP expression RP statement	{$$=makeNode(N_STMT_WHILE,$3,NIL,$5);}
+						| DO_SYM statement WHILE_SYM LP expression RP SEMICOLON	{$$=makeNode(N_STMT_DO,$2,NIL,$5);}
+						| FOR_SYM LP for_expression RP statement 	{$$=makeNode(N_STMT_FOR,$3,NIL,$5);}
 						;
-expression_opt:
-						expression 
+for_expression
+						:expression_opt SEMICOLON expression_opt SEMICOLON expression_opt	
+						{$$=makeNode(N_FOR_EXP,$1,$3,$5);}
 						;
-jump_statement:
-						RETURN_SYM expression_opt SEMI_COLON
-						| CONTINUE_SYM SEMI_COLON
-						| BREAK_SYM SEMI_COLON 
+expression_opt
+						:			{$$=NIL;}
+						| expression 	{$$=$1;}
 						;
-primary_expression:
-						IDENTIFIER 
-						| INTEGER_CONSTANT 
-						| FLOAT_CONSTANT 
-						| CHARACTER_CONSTANT 
-						| STRING_LITERAL
-						| LP expression RP 
+jump_statement
+						: RETURN_SYM expression_opt SEMICOLON	{$$=makeNode(N_STMT_RETURN,NIL,$2,NIL);}
+						| CONTINUE_SYM SEMICOLON	{$$=makeNode(N_STMT_CONTINUE,NIL,NIL,NIL);}
+						| BREAK_SYM SEMICOLON 	{$$=makeNode(N_STMT_BREAK,NIL,NIL,NIL);}
 						;
-postfix_expression:
-						primary_expression 
-						| postfix_expression LLLP expression RRRP
-						| postfix_expression LP arg_expression_list_opt RP
-						| postfix_expression DOT IDENTIFIER
-						| postfix_expression ARROW IDENTIFIER
-						| postfix_expression PLUSPLUS
-						| postfix_expression MINUSMINUS 
+arg_expression_list_opt
+						:			{$$=makeNode(N_ARG_LIST_NIL,NIL,NIL,NIL);}	
+						| arg_expression_list  {$$=$1;}
 						;
-arg_expression_list_opt:
-						arg_expression_list 
-						| 
+arg_expression_list
+						: assignment_expression {$$=makeNode(N_ARG_LIST,$1,NIL,makeNode(N_ARG_LIST_NIL,NIL,NIL,NIL));}
+						| arg_expression_list COMMA assignment_expression 	{$$=makeNodeList(N_ARG_LIST,$1,$3);}
 						;
-arg_expression_list: 
-						assignment_expression 
-						| arg_expression_list COMMA assignment_expression 
+constant_expression_opt
+						:		{$$=NIL;}
+						| constant_expression	{$$=$1;}
 						;
-unary_expression: 
-						postfix_expression
-						| PLUSPLUS unary_expression
-						| MINUSMINUS unary_expression
-						| AND cast_expression
-						| STAR cast_expression
-						| EXCLAM cast_expression
-						| MINUS cast_expression
-						| PLUS cast_expression
-						| SIZEOF_SYM unary_expression
-						| SIZEOF_SYM LP type_name RP 
+constant_expression
+						: expression	{$$=$1;}
 						;
-cast_expression: 
-						unary_expression 
-						| LP type_name RP cast_expression 
+expression
+						: comma_expression		{$$=$1;}
 						;
-type_name:
-						declaration_specifiers 
-						| declaration_specifiers abstract_declarator 
+comma_expression
+						: assignment_expression		{$$=$1;}
 						;
-multiplicative_expression:
-						cast_expression 
-						| multiplicative_expression STAR cast_expression
-						| multiplicative_expression DIVID cast_expression
-						| multiplicative_expression MOD cast_expression 
+assignment_expression
+						: conditional_expression		{$$=$1;}
+						| unary_expression ASSIGN assignment_expression	{$$=makeNode(N_EXP_ASSIGN,$1,NIL,$3);}
 						;
-additive_expression:
-						multiplicative_expression
-						| additive_expression PLUS multiplicative_expression
-						| additive_expression MINUS multiplicative_expression 
+conditional_expression
+						: logical_or_expression	{$$=$1;}
 						;
-relational_expression: 
-						additive_expression
-						| relational_expression RIGHTSIGN additive_expression
-						| relational_expression LEFTSIGN additive_expression		
-						| relational_expression RIGHTEQUALSIGN additive_expression
-						| relational_expression LEFTEQUALSIGN additive_expression 
+logical_or_expression
+						: logical_and_expression	{$$=$1;}
+						| logical_or_expression BARBAR logical_and_expression	{$$=makeNode(N_EXP_OR,$1,NIL,$3);}
 						;
-equality_expression: 
-						relational_expression
-						| equality_expression EQUALEQUAL relational_expression 
-						| equality_expression NOTEQUAL relational_expression 
+logical_and_expression
+						: bitwise_or_expression		{$$=$1;}
+						| logical_and_expression AMPAMP bitwise_or_expression	{$$=makeNode(N_EXP_AND,$1,NIL,$3);}
 						;
-logical_and_expression: 
-						equality_expression
-						| logical_and_expression ANDAND equality_expression 
+bitwise_or_expression
+						: bitwise_xor_expression	{$$=$1;}
 						;
-logical_or_expression: 
-						logical_and_expression
-						| logical_or_expression OROR logical_and_expression 
+bitwise_xor_expression
+						: bitwise_and_expression	{$$=$1;}
 						;
-assignment_expression: 
-						logical_or_expression 
-						| unary_expression EQUAL assignment_expression 
+bitwise_and_expression
+						: equality_expression		{$$=$1;}
 						;
-constant_expression: 
-						expression 
+equality_expression
+						: relational_expression		{$$=$1;}
+						| equality_expression EQL relational_expression		{$$=makeNode(N_EXP_EQL,$1,NIL,$3);}
+						| equality_expression NEQ relational_expression		{$$=makeNode(N_EXP_NEQ,$1,NIL,$3);}
 						;
-expression: 
-						assignment_expression 
+relational_expression
+						: shift_expression		{$$=$1;}
+						| relational_expression LSS shift_expression	{$$=makeNode(N_EXP_LSS,$1,NIL,$3);}
+						| relational_expression GTR shift_expression	{$$=makeNode(N_EXP_GTR,$1,NIL,$3);}
+						| relational_expression LEQ shift_expression	{$$=makeNode(N_EXP_LEQ,$1,NIL,$3);}
+						| relational_expression GEQ shift_expression	{$$=makeNode(N_EXP_GEQ,$1,NIL,$3);}
+						;
+shift_expression
+						: additive_expression		{$$=$1;}
+						;
+additive_expression
+						: multiplicative_expression		{$$=$1;}
+						| additive_expression PLUS multiplicative_expression	{$$=makeNode(N_EXP_ADD,$1,NIL,$3);}
+						| additive_expression MINUS multiplicative_expression	{$$=makeNode(N_EXP_SUB,$1,NIL,$3);}
+						;
+multiplicative_expression
+						: cast_expression
+						| multiplicative_expression STAR cast_expression	{$$=makeNode(N_EXP_MUL,$1,NIL,$3);}
+						| multiplicative_expression SLASH cast_expression	{$$=makeNode(N_EXP_DIV,$1,NIL,$3);}
+						| multiplicative_expression PERCENT cast_expression	{$$=makeNode(N_EXP_MOD,$1,NIL,$3);}
+						;
+cast_expression
+						: unary_expression 		{$$=$1;}
+						| LP type_name RP cast_expression	{$$=makeNode(N_EXP_CAST,$2,NIL,$4);} 
+						;
+unary_expression
+						: postfix_expression	{$$=$1;}
+						| PLUSPLUS unary_expression	{$$=makeNode(N_EXP_PRE_INC,NIL,$2,NIL);}
+						| MINUSMINUS unary_expression	{$$=makeNode(N_EXP_PRE_DEC,NIL,$2,NIL);}
+						| AMP cast_expression		{$$=makeNode(N_EXP_AMP,NIL,$2,NIL);}
+						| STAR cast_expression	{$$=makeNode(N_EXP_STAR,NIL,$2,NIL);}
+						| EXCL cast_expression	{$$=makeNode(N_EXP_NOT,NIL,$2,NIL);}
+						| MINUS cast_expression	{$$=makeNode(N_EXP_MINUS,NIL,$2,NIL);}
+						| PLUS cast_expression	{$$=makeNode(N_EXP_PLUS,NIL,$2,NIL);}
+						| SIZEOF_SYM unary_expression	{$$=makeNode(N_EXP_SIZE_EXP,NIL,$2,NIL);}
+						| SIZEOF_SYM LP type_name RP 	{$$=makeNode(N_EXP_SIZE_TYPE,NIL,$3,NIL);}
+						;
+postfix_expression
+						: primary_expression 	{$$=$1;}
+						| postfix_expression LB expression RB	{$$=makeNode(N_EXP_ARRAY,$1,NIL,$3);}
+						| postfix_expression LP arg_expression_list_opt RP	
+						{$$=makeNode(N_EXP_FUNCTION_CALL,$1,NIL,$3);}
+						| postfix_expression PERIOD IDENTIFIER	{$$=makeNode(N_EXP_STRUCT,$1,NIL,$3);}
+						| postfix_expression ARROW IDENTIFIER	{$$=makeNode(N_EXP_ARROW,$1,NIL,$3);}
+						| postfix_expression PLUSPLUS			{$$=makeNode(N_EXP_POST_INC,NIL,$1,NIL);}
+						| postfix_expression MINUSMINUS 		{$$=makeNode(N_EXP_POST_DEC,NIL,$1,NIL);}
+						;
+primary_expression
+						: IDENTIFIER {$$=makeNode(N_EXP_IDENT,NIL,getIdentifierDeclared($1),NIL);}
+						| INTEGER_CONSTANT 	{$$=makeNode(N_EXP_INT_CONST,NIL,$1,NIL);}
+						| FLOAT_CONSTANT  	{$$=makeNode(N_EXP_FLOAT_CONST,NIL,$1,NIL);}
+						| CHARACTER_CONSTANT  	{$$=makeNode(N_EXP_CHAR_CONST,NIL,$1,NIL);}
+						| STRING_LITERAL 	{$$=makeNode(N_EXP_STRING_LITERAL,NIL,$1,NIL);}
+						| LP expression RP {$$=$2;}
+						;
+type_name
+						: declaration_specifiers abstract_declarator_opt	{$$=setTypeNameSpecifier($2,$1);}
 						;
 %%
 
@@ -331,10 +357,8 @@ void main(int argc,char *argv[]){
 		initialize();
 		yyparse();
 
-		/*
 		if(!syntax_err)
 				printf_ast(root);
-				*/
 
 }
 

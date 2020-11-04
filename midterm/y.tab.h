@@ -45,117 +45,119 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    DOTDOTDOT = 258,
-    OROR = 259,
-    ANDAND = 260,
-    EQUALEQUAL = 261,
-    NOTEQUAL = 262,
-    RIGHTSIGN = 263,
-    LEFTSIGN = 264,
-    RIGHTEQUALSIGN = 265,
-    LEFTEQUALSIGN = 266,
-    DIVID = 267,
-    MOD = 268,
-    AND = 269,
-    EXCLAM = 270,
-    MINUS = 271,
-    PLUS = 272,
-    SIZEOF_SYM = 273,
-    LP = 274,
-    LLP = 275,
-    LLLP = 276,
-    RP = 277,
-    RRP = 278,
-    RRRP = 279,
-    DOT = 280,
-    ARROW = 281,
-    PLUSPLUS = 282,
-    MINUSMINUS = 283,
-    INTEGER_CONSTANT = 284,
-    FLOAT_CONSTANT = 285,
-    CHARACTER_CONSTANT = 286,
-    STRING_LITERAL = 287,
-    RETURN_SYM = 288,
-    CONTINUE_SYM = 289,
-    BREAK_SYM = 290,
-    WHILE_SYM = 291,
-    DO_SYM = 292,
-    FOR_SYM = 293,
-    IF_SYM = 294,
-    ELSE_SYM = 295,
-    SWITCH_SYM = 296,
-    DEFAULT_SYM = 297,
-    CASE_SYM = 298,
-    COLON = 299,
-    IDENTIFIER = 300,
-    TYPE_IDENTIFIER = 301,
-    SEMI_COLON = 302,
-    COMMA = 303,
-    EQUAL = 304,
-    AUTO_SYM = 305,
-    STATIC_SYM = 306,
-    TYPEDEF_SYM = 307,
-    STRUCT_SYM = 308,
-    UNION_SYM = 309,
-    ENUM_SYM = 310,
-    STAR = 311
+    IDENTIFIER = 258,
+    TYPE_IDENTIFIER = 259,
+    FLOAT_CONSTANT = 260,
+    INTEGER_CONSTANT = 261,
+    CHARACTER_CONSTANT = 262,
+    STRING_LITERAL = 263,
+    PLUS = 264,
+    MINUS = 265,
+    PLUSPLUS = 266,
+    MINUSMINUS = 267,
+    BAR = 268,
+    AMP = 269,
+    BARBAR = 270,
+    AMPAMP = 271,
+    ARROW = 272,
+    SEMICOLON = 273,
+    LSS = 274,
+    GTR = 275,
+    LEQ = 276,
+    GEQ = 277,
+    EQL = 278,
+    NEQ = 279,
+    DOTDOTDOT = 280,
+    LP = 281,
+    RP = 282,
+    LB = 283,
+    RB = 284,
+    LR = 285,
+    RR = 286,
+    PERIOD = 287,
+    COMMA = 288,
+    EXCL = 289,
+    STAR = 290,
+    SLASH = 291,
+    PERCENT = 292,
+    ASSIGN = 293,
+    COLON = 294,
+    AUTO_SYM = 295,
+    STATIC_SYM = 296,
+    TYPEDEF_SYM = 297,
+    STRUCT_SYM = 298,
+    ENUM_SYM = 299,
+    SIZEOF_SYM = 300,
+    UNION_SYM = 301,
+    IF_SYM = 302,
+    ELSE_SYM = 303,
+    WHILE_SYM = 304,
+    DO_SYM = 305,
+    FOR_SYM = 306,
+    CONTINUE_SYM = 307,
+    BREAK_SYM = 308,
+    RETURN_SYM = 309,
+    SWITCH_SYM = 310,
+    CASE_SYM = 311,
+    DEFAULT_SYM = 312
   };
 #endif
 /* Tokens.  */
-#define DOTDOTDOT 258
-#define OROR 259
-#define ANDAND 260
-#define EQUALEQUAL 261
-#define NOTEQUAL 262
-#define RIGHTSIGN 263
-#define LEFTSIGN 264
-#define RIGHTEQUALSIGN 265
-#define LEFTEQUALSIGN 266
-#define DIVID 267
-#define MOD 268
-#define AND 269
-#define EXCLAM 270
-#define MINUS 271
-#define PLUS 272
-#define SIZEOF_SYM 273
-#define LP 274
-#define LLP 275
-#define LLLP 276
-#define RP 277
-#define RRP 278
-#define RRRP 279
-#define DOT 280
-#define ARROW 281
-#define PLUSPLUS 282
-#define MINUSMINUS 283
-#define INTEGER_CONSTANT 284
-#define FLOAT_CONSTANT 285
-#define CHARACTER_CONSTANT 286
-#define STRING_LITERAL 287
-#define RETURN_SYM 288
-#define CONTINUE_SYM 289
-#define BREAK_SYM 290
-#define WHILE_SYM 291
-#define DO_SYM 292
-#define FOR_SYM 293
-#define IF_SYM 294
-#define ELSE_SYM 295
-#define SWITCH_SYM 296
-#define DEFAULT_SYM 297
-#define CASE_SYM 298
-#define COLON 299
-#define IDENTIFIER 300
-#define TYPE_IDENTIFIER 301
-#define SEMI_COLON 302
-#define COMMA 303
-#define EQUAL 304
-#define AUTO_SYM 305
-#define STATIC_SYM 306
-#define TYPEDEF_SYM 307
-#define STRUCT_SYM 308
-#define UNION_SYM 309
-#define ENUM_SYM 310
-#define STAR 311
+#define IDENTIFIER 258
+#define TYPE_IDENTIFIER 259
+#define FLOAT_CONSTANT 260
+#define INTEGER_CONSTANT 261
+#define CHARACTER_CONSTANT 262
+#define STRING_LITERAL 263
+#define PLUS 264
+#define MINUS 265
+#define PLUSPLUS 266
+#define MINUSMINUS 267
+#define BAR 268
+#define AMP 269
+#define BARBAR 270
+#define AMPAMP 271
+#define ARROW 272
+#define SEMICOLON 273
+#define LSS 274
+#define GTR 275
+#define LEQ 276
+#define GEQ 277
+#define EQL 278
+#define NEQ 279
+#define DOTDOTDOT 280
+#define LP 281
+#define RP 282
+#define LB 283
+#define RB 284
+#define LR 285
+#define RR 286
+#define PERIOD 287
+#define COMMA 288
+#define EXCL 289
+#define STAR 290
+#define SLASH 291
+#define PERCENT 292
+#define ASSIGN 293
+#define COLON 294
+#define AUTO_SYM 295
+#define STATIC_SYM 296
+#define TYPEDEF_SYM 297
+#define STRUCT_SYM 298
+#define ENUM_SYM 299
+#define SIZEOF_SYM 300
+#define UNION_SYM 301
+#define IF_SYM 302
+#define ELSE_SYM 303
+#define WHILE_SYM 304
+#define DO_SYM 305
+#define FOR_SYM 306
+#define CONTINUE_SYM 307
+#define BREAK_SYM 308
+#define RETURN_SYM 309
+#define SWITCH_SYM 310
+#define CASE_SYM 311
+#define DEFAULT_SYM 312
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
