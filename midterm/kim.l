@@ -9,12 +9,19 @@ ws			{delim}+
 #include "type.h"
 #include <string.h>
 
-extern int yylval;
+
+//#define YYSTYPE_IS_DECLARED 1
+//typedef long YYSTYPE;
+
+extern long yylval;
 extern int line_no;
 
 extern A_ID *current_id;
 char *makeString();
-int checkidentifier();
+int checkIdentifier();
+
+
+
 
 %}
 
@@ -24,7 +31,7 @@ int checkidentifier();
 auto			{return(AUTO_SYM);}
 break			{return(BREAK_SYM);}
 case			{return(CASE_SYM);}
-continue		{return(CASE_SYM);}
+continue		{return(CONTINUE_SYM);}
 default			{return(DEFAULT_SYM);}
 do				{return(DO_SYM);}
 else			{return(ELSE_SYM);}
@@ -71,7 +78,7 @@ while			{return(WHILE_SYM);}
 "\="			{return(ASSIGN);}
 {digit}+					{yylval=atoi(yytext); return(INTEGER_CONSTANT);}
 {digit}+\.{digit}+			{yylval=makeString(yytext); return(FLOAT_CONSTANT);}
-{letter}({letter}|{digit})*	{return(checkidentifier(yytext));}
+{letter}({letter}|{digit})*	{return(checkIdentifier(yytext));}
 \"([^"\n]|\\["\n])*\"		{yylval=makeString(yytext); return(STRING_LITERAL);}
 \'([^'\n]|\'\')\'			{yylval=*(yytext+1); return(CHARACTER_CONSTANT);}
 "//"[^\n]*					{}

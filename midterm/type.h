@@ -1,4 +1,8 @@
 #define NIL 0
+#define YYSTYPE_IS_DECLARED 1
+typedef long YYSTYPE;
+
+
 typedef enum {FALSE,TRUE} BOOLEAN;
 typedef enum e_node_name {
 		N_NULL,
@@ -58,10 +62,10 @@ typedef enum e_node_name {
 		N_STMT_LIST,
 		N_STMT_LIST_NIL,
 		N_INIT_LIST,
-		N_INIT_ONE,
+		N_INIT_LIST_ONE,
 		N_INIT_LIST_NIL} NODE_NAME;
 
-typedef enum {T_NULL,T_ENUM,T_ARRAY,T_ARRAY,T_STRUCT,T_UNION,T_FUNC, T_POINTER,T_VOID} T_KIND;
+typedef enum {T_NULL,T_ENUM,T_ARRAY,T_STRUCT,T_UNION,T_FUNC, T_POINTER,T_VOID} T_KIND;
 typedef enum {Q_NULL,Q_CONST,Q_VOLATILE} Q_KIND;
 typedef enum {S_NULL,S_AUTO,S_STATIC,S_TYPEDEF,S_EXTERN,S_REGISTER} S_KIND;
 typedef enum {ID_NULL,ID_VAR, ID_FUNC, ID_PARM, ID_FIELD,ID_TYPE,ID_ENUM, ID_STRUCT,ID_ENUM_LITERAL} ID_KIND;
@@ -92,7 +96,7 @@ typedef struct s_id{
 		ID_KIND kind;
 		S_KIND specifier;
 		int level;
-		int adderss;
+		int address;
 		int value;
 		A_NODE *init;
 		A_TYPE *type;
@@ -109,25 +113,63 @@ typedef struct {
 		int line;
 } A_SPECIFIER;
 
+//func.c
+A_NODE *makeNode(NODE_NAME,A_NODE *,A_NODE *,A_NODE *);
+A_NODE *makeNodeList(NODE_NAME,A_NODE *,A_NODE *);
+A_ID *makeIdentifier(char *);
+A_ID *makeDummyIdentifier();
+A_TYPE *makeType(T_KIND);
+A_SPECIFIER *makeSpecifier(A_TYPE *,S_KIND);
+A_ID *searchIdentifier(char *,A_ID *);
+A_ID *searchIdentifierAtCurrentLevel(char *,A_ID *);
+A_SPECIFIER *updateSpecifier(A_SPECIFIER *, A_TYPE *, S_KIND);
+void checkForwardReference();
+void setDefaultSpecifier(A_SPECIFIER *);
+A_ID *linkDeclaratorList(A_ID *,A_ID *);
+A_ID *getIdentifierDeclared(char *);
+A_TYPE *getTypeOfStructOrEnumRefIdentifier(T_KIND,char *,ID_KIND);
+A_ID *setDeclaratorInit(A_ID *,A_NODE *);
+A_ID *setDeclaratorKind(A_ID *,ID_KIND);
+A_ID *setDeclaratorType(A_ID *,A_TYPE *);
+A_ID *setDeclaratorElementType(A_ID *,A_TYPE *);
+A_ID *setDeclaratorTypeAndKind(A_ID *, A_TYPE *, ID_KIND);
+A_ID *setDeclaratorListSpecifier(A_ID *, A_SPECIFIER *);
+A_ID *setFunctionDeclaratorSpecifier(A_ID *, A_SPECIFIER *);
+A_ID *setFunctionDeclaratorBody(A_ID *, A_NODE *);
+A_ID *setParameterDeclaratorSpecifier(A_ID *, A_SPECIFIER *);
+A_ID *setStructDeclaratorListSpecifier(A_ID *, A_TYPE *);
+A_TYPE *setTypeNameSpecifier(A_TYPE *,A_SPECIFIER *);
+A_TYPE *setTypeElementType(A_TYPE *, A_TYPE *);
+A_TYPE *setTypeField(A_TYPE *, A_ID *);
+A_TYPE *setTypeExpr(A_TYPE *, A_NODE *);
+A_TYPE *setTypeAndKindOfDeclarator(A_TYPE *, ID_KIND, A_ID *);
+A_TYPE *setTypeStructOrEnumIdentifier(T_KIND, char *,ID_KIND);
+BOOLEAN isNotSameFormalParameters(A_ID *, A_ID *);
+BOOLEAN isNotSameType(A_TYPE *, A_TYPE *);
+BOOLEAN isPointerOrArrayType(A_TYPE *);
+void syntax_error();
+void initialize();
+
+//print.c
+
+
+void print_ast(A_NODE *);
+void prt_program(A_NODE *, int);
+void prt_initializer(A_NODE *, int);
+void prt_arg_expr_list(A_NODE *, int);
+void prt_statement(A_NODE *, int);
+void prt_statement_list(A_NODE *, int);
+void prt_for_expression(A_NODE *, int);
+void prt_expression(A_NODE *, int);
+void prt_A_TYPE(A_TYPE *, int);
+void prt_A_ID_LIST(A_ID *, int);
+void prt_A_ID(A_ID *, int);
+void prt_A_ID_NAME(A_ID *, int);
+void prt_STRING(char *, int);
+void prt_integer(int, int);
+void print_node(A_NODE *,int);
+void print_space(int);
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}

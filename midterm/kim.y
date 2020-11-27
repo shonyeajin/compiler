@@ -2,12 +2,24 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "type.h"
+		
+//#define YYSTYPE_IS_DECLARED 1
+//typedef long YYSTYPE;
+
+
 
 extern int line_no,syntax_err;
 extern A_NODE *root;
 extern A_ID *current_id;
 extern int current_level;
 extern A_TYPE *int_type;
+
+extern char *yytext;
+yyerror(char *s);
+extern yylex();
+
+
+
 %}
 %start program
 
@@ -124,7 +136,7 @@ enumerator_list
 enumerator
 						: IDENTIFIER {$$=setDeclaratorKind(makeIdentifier($1),ID_ENUM_LITERAL);}
 						| IDENTIFIER {$$=setDeclaratorKind(makeIdentifier($1),ID_ENUM_LITERAL);}
-						ASSIGN expression {$$=$1;}
+						ASSIGN expression {$$=setDeclaratorInit($2,$4);}
 						;
 declarator
 						: pointer direct_declarator {$$=setDeclaratorElementType($2,$1);}
@@ -132,7 +144,7 @@ declarator
 						;
 pointer
 						: STAR				{$$=makeType(T_POINTER);} 
-						| STAR pointer 		{$$=setTypeElementType($2,makeType(T_POINTER);}
+						| STAR pointer 		{$$=setTypeElementType($2,makeType(T_POINTER));}
 						;
 direct_declarator
 						: IDENTIFIER {$$=makeIdentifier($1);}
@@ -156,10 +168,10 @@ parameter_type_list
 parameter_list
 						: parameter_declaration {$$=$1;}
 						| parameter_list COMMA parameter_declaration 
-						{$$=linkDeclaratorList($1,setDeclaratorKind(makeDummyIdentifier(),ID_PARM));}
+						{$$=linkDeclaratorList($1,$3);}
 						;
 parameter_declaration
-						: declaration_specifiers declarator {$$=setParameterDeclaratorSPecifier($2,$1);}
+						: declaration_specifiers declarator {$$=setParameterDeclaratorSpecifier($2,$1);}
 						| declaration_specifiers abstract_declarator_opt
 						{$$=setParameterDeclaratorSpecifier(setDeclaratorType(makeDummyIdentifier(),$2),$1);}
 						;
@@ -343,14 +355,14 @@ type_name
 						;
 %%
 
-extern char *yytext;
+//extern char *yytext;
 yyerror(char *s){
 		syntax_err++;
 		printf("line %d: %s near %s\n",line_no,s,yytext);
 }
 void main(int argc,char *argv[]){
 		//yyparse();
-		if((int yyin=fopen(argv[argc-1],"r"))==NULL){
+		if((fopen(argv[argc-1],"r"))==NULL){
 				printf("can not open input file: %s\n",argv[argc-1]);
 				exit(1);
 		}
@@ -358,7 +370,7 @@ void main(int argc,char *argv[]){
 		yyparse();
 
 		if(!syntax_err)
-				printf_ast(root);
+				print_ast(root);
 
 }
 

@@ -1,0 +1,38 @@
+======= syntax tree ==========
+N_PROGRAM (0,0)
+| (ID="dialogFunc") TYPE:1249cb70 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | TYPE
+| | | FUNCTION
+| | | | PARAMETER
+| | | | TYPE
+| | | | | (void)| | | | BODY
+| | | | | N_STMT_COMPOUND (0,0)
+| | | | | | (ID="a") TYPE:124974e0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | TYPE
+| | | | | | | | (int)
+| | | | | | N_STMT_LIST (0,0)
+| | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | (ID="scanf") TYPE:124978e0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | | "input number :"
+| | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | N_EXP_AMP (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="a") TYPE:124974e0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | N_STMT_LIST (0,0)
+| | | | | | | | N_STMT_EXPRESSION (0,0)
+| | | | | | | | | N_EXP_FUNCTION_CALL (0,0)
+| | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | (ID="printf") TYPE:124977b0 KIND:FUNC SPEC=NULL LEV=0 VAL=0 ADDR=0 
+| | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | N_EXP_STRING_LITERAL (0,0)
+| | | | | | | | | | | | "you entered %d\n"
+| | | | | | | | | | | N_ARG_LIST (0,0)
+| | | | | | | | | | | | N_EXP_IDENT (0,0)
+| | | | | | | | | | | | | (ID="a") TYPE:124974e0 KIND:VAR SPEC=AUTO LEV=1 VAL=0 ADDR=0 
+| | | | | | | | | | | | N_ARG_LIST_NIL (0,0)
+| | | | | | | | N_STMT_LIST_NIL (0,0)

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "type.h"
 #include "y.tab.h"
 
@@ -279,7 +280,7 @@ A_ID *setFunctionDeclaratorSpecifier(A_ID *id, A_SPECIFIER *p){
 		if(p->stor)
 				syntax_error(25);
 		setDefaultSpecifier(p);
-		if(id->type->kind != FUNC){
+		if(id->type->kind != T_FUNC){
 				syntax_error(21);
 				return(id);
 		}
@@ -438,6 +439,13 @@ BOOLEAN isNotSameType(A_TYPE *t1, A_TYPE *t2){
 				return(t1 !=t2);
 }
 
+BOOLEAN isPointerOrArrayType(A_TYPE *t){
+		if(t&&(t->kind==T_POINTER || t->kind==T_ARRAY))
+				return (TRUE);
+		else
+				return (FALSE);
+}
+
 void initialize(){
 		int_type=setTypeAndKindOfDeclarator(makeType(T_ENUM),ID_TYPE,makeIdentifier("int"));
 		float_type=setTypeAndKindOfDeclarator(makeType(T_ENUM),ID_TYPE,makeIdentifier("float"));
@@ -478,7 +486,7 @@ void syntax_error(int i,char *s){
 						printf("undefined identifier %s",s);
 						break;
 				case 14:
-						printf("illegal type specifier in formal parameter",s);
+						printf("illegal type specifier in formal parameter");
 						break;
 				case 20:
 						printf("illegal storage class in type specifiers");

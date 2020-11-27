@@ -536,15 +536,22 @@ char *yytext;
 #include "type.h"
 #include <string.h>
 
-extern int yylval;
+
+//#define YYSTYPE_IS_DECLARED 1
+//typedef long YYSTYPE;
+
+extern long yylval;
 extern int line_no;
 
 extern A_ID *current_id;
 char *makeString();
-int checkidentifier();
+int checkIdentifier();
 
-#line 547 "lex.yy.c"
-#line 548 "lex.yy.c"
+
+
+
+#line 554 "lex.yy.c"
+#line 555 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -761,9 +768,9 @@ YY_DECL
 		}
 
 	{
-#line 21 "kim.l"
+#line 28 "kim.l"
 
-#line 767 "lex.yy.c"
+#line 774 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -822,292 +829,292 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 22 "kim.l"
+#line 29 "kim.l"
 { }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 23 "kim.l"
+#line 30 "kim.l"
 {line_no++;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 24 "kim.l"
+#line 31 "kim.l"
 {return(AUTO_SYM);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 25 "kim.l"
+#line 32 "kim.l"
 {return(BREAK_SYM);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 26 "kim.l"
+#line 33 "kim.l"
 {return(CASE_SYM);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 27 "kim.l"
-{return(CASE_SYM);}
+#line 34 "kim.l"
+{return(CONTINUE_SYM);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 28 "kim.l"
+#line 35 "kim.l"
 {return(DEFAULT_SYM);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 29 "kim.l"
+#line 36 "kim.l"
 {return(DO_SYM);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 30 "kim.l"
+#line 37 "kim.l"
 {return(ELSE_SYM);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 31 "kim.l"
+#line 38 "kim.l"
 {return(ENUM_SYM);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 32 "kim.l"
+#line 39 "kim.l"
 {return(FOR_SYM);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 33 "kim.l"
+#line 40 "kim.l"
 {return(IF_SYM);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 34 "kim.l"
+#line 41 "kim.l"
 {return(RETURN_SYM);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 35 "kim.l"
+#line 42 "kim.l"
 {return(SIZEOF_SYM);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 36 "kim.l"
+#line 43 "kim.l"
 {return(STATIC_SYM);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 37 "kim.l"
+#line 44 "kim.l"
 {return(STRUCT_SYM);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 38 "kim.l"
+#line 45 "kim.l"
 {return(SWITCH_SYM);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 39 "kim.l"
+#line 46 "kim.l"
 {return(TYPEDEF_SYM);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 40 "kim.l"
+#line 47 "kim.l"
 {return(UNION_SYM);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 41 "kim.l"
+#line 48 "kim.l"
 {return(WHILE_SYM);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 42 "kim.l"
+#line 49 "kim.l"
 {return(PLUSPLUS);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "kim.l"
+#line 50 "kim.l"
 {return(MINUSMINUS);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 44 "kim.l"
+#line 51 "kim.l"
 {return(ARROW);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 45 "kim.l"
-{return(RIGHTSIGN);}
+#line 52 "kim.l"
+{return(LSS);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 46 "kim.l"
-{return(LEFTSIGN);}
+#line 53 "kim.l"
+{return(GTR);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 47 "kim.l"
-{return(RIGHTEQUALSIGN);}
+#line 54 "kim.l"
+{return(LEQ);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 48 "kim.l"
-{return(LEFTEQUALSIGN);}
+#line 55 "kim.l"
+{return(GEQ);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 49 "kim.l"
-{return(EQUALEQUAL);}
+#line 56 "kim.l"
+{return(EQL);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 50 "kim.l"
-{return(NOTEQUAL);}
+#line 57 "kim.l"
+{return(NEQ);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 51 "kim.l"
-{return(ANDAND);}
+#line 58 "kim.l"
+{return(AMPAMP);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 52 "kim.l"
-{return(OROR);}
+#line 59 "kim.l"
+{return(BARBAR);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 53 "kim.l"
+#line 60 "kim.l"
 {return(DOTDOTDOT);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 54 "kim.l"
+#line 61 "kim.l"
 {return(LP);}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 55 "kim.l"
+#line 62 "kim.l"
 {return(RP);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 56 "kim.l"
-{return(LLLP);}
+#line 63 "kim.l"
+{return(LB);}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 57 "kim.l"
-{return(RRRP);}
+#line 64 "kim.l"
+{return(RB);}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 58 "kim.l"
-{return(LLP);}
+#line 65 "kim.l"
+{return(LR);}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 59 "kim.l"
-{return(RRP);}
+#line 66 "kim.l"
+{return(RR);}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 60 "kim.l"
+#line 67 "kim.l"
 {return(COLON);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 61 "kim.l"
-{return(DOT);}
+#line 68 "kim.l"
+{return(PERIOD);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 62 "kim.l"
+#line 69 "kim.l"
 {return(COMMA);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 63 "kim.l"
-{return(EXCLAM);}
+#line 70 "kim.l"
+{return(EXCL);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 64 "kim.l"
+#line 71 "kim.l"
 {return(STAR);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 65 "kim.l"
-{return(DIVID);}
+#line 72 "kim.l"
+{return(SLASH);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 66 "kim.l"
-{return(MOD);}
+#line 73 "kim.l"
+{return(PERCENT);}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 67 "kim.l"
-{return(AND);}
+#line 74 "kim.l"
+{return(AMP);}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 68 "kim.l"
-{return(SEMI_COLON);}
+#line 75 "kim.l"
+{return(SEMICOLON);}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 69 "kim.l"
+#line 76 "kim.l"
 {return(PLUS);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 70 "kim.l"
+#line 77 "kim.l"
 {return(MINUS);}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 71 "kim.l"
-{return(EQUAL);}
+#line 78 "kim.l"
+{return(ASSIGN);}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 72 "kim.l"
+#line 79 "kim.l"
 {yylval=atoi(yytext); return(INTEGER_CONSTANT);}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 73 "kim.l"
+#line 80 "kim.l"
 {yylval=makeString(yytext); return(FLOAT_CONSTANT);}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 74 "kim.l"
-{return(checkidentifier(yytext));}
+#line 81 "kim.l"
+{return(checkIdentifier(yytext));}
 	YY_BREAK
 case 54:
 /* rule 54 can match eol */
 YY_RULE_SETUP
-#line 75 "kim.l"
+#line 82 "kim.l"
 {yylval=makeString(yytext); return(STRING_LITERAL);}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 76 "kim.l"
+#line 83 "kim.l"
 {yylval=*(yytext+1); return(CHARACTER_CONSTANT);}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 77 "kim.l"
+#line 84 "kim.l"
 {}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 78 "kim.l"
+#line 85 "kim.l"
 ECHO;
 	YY_BREAK
-#line 1111 "lex.yy.c"
+#line 1118 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2112,7 +2119,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 78 "kim.l"
+#line 85 "kim.l"
 
 
 char *makeString(char *s){
