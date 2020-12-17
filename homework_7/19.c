@@ -10,5 +10,4 @@ int main(){
 						int p=1;
 				}
 		}
-		//printf("is there p?:%d",p);
 }

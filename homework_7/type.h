@@ -1,6 +1,4 @@
 #define NIL 0
-#define YYSTYPE_IS_DECLARED 1
-typedef long YYSTYPE;
 
 
 typedef enum {FALSE,TRUE} BOOLEAN;
@@ -152,7 +150,6 @@ void initialize();
 
 //print.c
 /*
-
 void print_ast(A_NODE *);
 void prt_program(A_NODE *, int);
 void prt_initializer(A_NODE *, int);
@@ -170,7 +167,6 @@ void prt_integer(int, int);
 void print_node(A_NODE *,int);
 void print_space(int);
 */
-
 
 
 //print_sem.c
@@ -193,5 +189,7 @@ extern A_TYPE *int_type, *float_type, *char_type, *void_type, *string_type;
 void print_space(int);
 void print_node(A_NODE *,int);
 
-
+//semantic.c
+BOOLEAN isFloatType(A_TYPE *);
+BOOLEAN isArrayType(A_TYPE *);
 

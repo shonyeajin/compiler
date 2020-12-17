@@ -7,7 +7,7 @@ typedef struct person{
 
 int main(){
 	p p1;
-	char *str="shonyeajin";
+	char *pname="shonyeajin";
 	p1.age++;
-	p1.name=str;
+	p1.name=pname;
 }

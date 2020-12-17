@@ -5,15 +5,15 @@ line		[\n]
 ws			{delim}+
 
 %{
+
+#define YYSTYPE_IS_DECLARED 1
+typedef long YYSTYPE;
+
 #include "y.tab.h"
 #include "type.h"
 #include <string.h>
 
-
-//#define YYSTYPE_IS_DECLARED 1
-//typedef long YYSTYPE;
-
-extern long yylval;
+//extern long yylval;
 extern int line_no;
 
 extern A_ID *current_id;
@@ -126,3 +126,6 @@ int checkidentifier(char *s){
 }
 */
 
+int yywrap(){
+return 1;
+}

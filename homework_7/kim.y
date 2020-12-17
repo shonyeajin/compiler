@@ -3,14 +3,15 @@
 #include <stdio.h>
 #include "type.h"
 		
-//#define YYSTYPE_IS_DECLARED 1
-//typedef long YYSTYPE;
+#define YYSTYPE_IS_DECLARED 1
+typedef long YYSTYPE;
 
 extern int semantic_err;
 void initialize();
 void print_ast();
 void print_sem_ast();
 void semantic_analysis();
+void code_generation();
 
 extern int line_no,syntax_err;
 extern A_NODE *root;
@@ -21,6 +22,8 @@ extern A_TYPE *int_type;
 extern char *yytext;
 yyerror(char *s);
 extern yylex();
+
+FILE *fout;
 
 
 
@@ -380,14 +383,29 @@ void main(int argc,char *argv[]){
 }
 */
 void main(int argc,char *argv[]){
+
+		if((fout=fopen("a.asm","w"))==NULL){
+				printf("can not open output file: a.asm\n");
+				exit(1);
+		}
+
 		initialize();
 		yyparse();
 		if(syntax_err)
 				exit(1);
+		print_ast(root);
+		printf("\n");
+
+		semantic_analysis(root);
+
 		if(semantic_err)
 				exit(1);
-		print_ast(root);
 		print_sem_ast(root);
+		printf("\n");
+
+		code_generation(root);
+		fclose(fout);
+
 		exit(0);
 }
 

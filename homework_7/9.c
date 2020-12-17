@@ -4,17 +4,17 @@ int main(){
 		int b=10;
 
 		if(a>b)
-				printf("a is larger");
+				a++;
 		if(a<b)
-				printf("b is larger");
+				b++;
 		if(a>=b)
-				printf("a is larger or equal");
+				a++;
 		if(a<=b)
-				printf("b is larger or equal");
+				b++;
 		if(a==b)
-				printf("a and b is equal");
+				a+b;
 		if(a!=b)
-				printf("a and b is not equal");
+				a*b;
 
 
 
