@@ -1,5 +1,6 @@
 int main(){
 		int a;
-		printf("%d",a);
+		a=10;
+		printf("%d\n",a);
 		return 0;
 }
